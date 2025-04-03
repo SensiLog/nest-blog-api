@@ -26,41 +26,42 @@ let PostController = class PostController {
     constructor(postRepository) {
         this.postRepository = postRepository;
     }
-    async createPost(createPostDto, file, prefix) {
+    async createPost(createPostDto, file) {
         if (!file) {
             throw new common_1.BadRequestException('Image file is required');
         }
-        if (!prefix) {
-            throw new common_1.BadRequestException('Prefix is required in the URL');
+        if (!createPostDto.userId) {
+            throw new common_1.BadRequestException('User ID is required');
         }
-        const uploadResult = await this.uploadToS3(file, prefix);
+        const uploadResult = await this.uploadToS3(file, createPostDto.userId);
         const post = this.postRepository.create({
             title: createPostDto.title,
             content: createPostDto.content,
             imgUrl: uploadResult.Location,
+            userId: createPostDto.userId,
         });
         const savedPost = await this.postRepository.save(post);
-        console.log('Post criado com ID:', savedPost.id);
+        console.log('Post criado com ID:', savedPost.id, 'para o usuário:', savedPost.userId);
         return {
             message: 'Post created successfully',
             post: savedPost,
         };
     }
-    async getPostsByPrefix(prefix) {
-        if (!prefix) {
-            throw new common_1.BadRequestException('Prefix is required in the URL');
+    async getPostsByUser(userId) {
+        if (!userId) {
+            throw new common_1.BadRequestException('User ID is required in the URL');
         }
         const posts = await this.postRepository.find({
-            where: { imgUrl: (0, typeorm_1.Like)(`%${prefix}%`) },
+            where: { userId: userId },
         });
         if (posts.length === 0) {
             return {
-                message: 'Nenhum post encontrado.'
+                message: 'Nenhum post encontrado para este usuário.',
             };
         }
         return {
             message: 'Posts encontrados com sucesso',
-            posts: posts
+            posts: posts,
         };
     }
     async getPostById(id) {
@@ -69,7 +70,7 @@ let PostController = class PostController {
         });
         if (post == null) {
             return {
-                message: 'Post não encontrado'
+                message: 'Post não encontrado',
             };
         }
         return {
@@ -83,12 +84,12 @@ let PostController = class PostController {
         });
         if (post == null) {
             return {
-                message: 'Post não encontrado'
+                message: 'Post não encontrado',
             };
         }
         await this.postRepository.update(id, updatePostDto);
         return {
-            message: 'Post atualizado com sucesso'
+            message: 'Post atualizado com sucesso',
         };
     }
     async deletePost(id) {
@@ -97,20 +98,20 @@ let PostController = class PostController {
         });
         if (post == null) {
             return {
-                message: 'Post não encontrado'
+                message: 'Post não encontrado',
             };
         }
         await this.postRepository.delete(id);
         return {
-            message: 'Post deletado com sucesso'
+            message: 'Post deletado com sucesso',
         };
     }
-    async uploadToS3(file, prefix) {
+    async uploadToS3(file, userName) {
         const bucketName = 'blogapi-sensilog';
         try {
             const params = {
                 Bucket: bucketName,
-                Key: `${prefix}-${(0, uuid_1.v4)()}`,
+                Key: `user-${userName}/${(0, uuid_1.v4)()}`,
                 Body: file.buffer,
                 ContentType: file.mimetype,
             };
@@ -123,22 +124,21 @@ let PostController = class PostController {
 };
 exports.PostController = PostController;
 __decorate([
-    (0, common_1.Post)(':prefix'),
+    (0, common_1.Post)(),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('image')),
     __param(0, (0, common_1.Body)()),
     __param(1, (0, common_1.UploadedFile)()),
-    __param(2, (0, common_1.Param)('prefix')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [post_createdto_1.CreatePostDto, Object, String]),
+    __metadata("design:paramtypes", [post_createdto_1.CreatePostDto, Object]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "createPost", null);
 __decorate([
-    (0, common_1.Get)(':prefix'),
-    __param(0, (0, common_1.Param)('prefix')),
+    (0, common_1.Get)('user/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], PostController.prototype, "getPostsByPrefix", null);
+], PostController.prototype, "getPostsByUser", null);
 __decorate([
     (0, common_1.Get)('find/:id'),
     __param(0, (0, common_1.Param)('id')),

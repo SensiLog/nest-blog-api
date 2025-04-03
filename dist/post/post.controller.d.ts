@@ -4,11 +4,11 @@ import { Repository } from 'typeorm';
 export declare class PostController {
     private readonly postRepository;
     constructor(postRepository: Repository<PostEntity>);
-    createPost(createPostDto: CreatePostDto, file: Express.Multer.File, prefix: string): Promise<{
+    createPost(createPostDto: CreatePostDto, file: Express.Multer.File): Promise<{
         message: string;
         post: PostEntity;
     }>;
-    getPostsByPrefix(prefix: string): Promise<{
+    getPostsByUser(userId: string): Promise<{
         message: string;
         posts?: undefined;
     } | {

@@ -17,6 +17,7 @@ exports.PostModule = PostModule;
 exports.PostModule = PostModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([post_entity_1.Post])],
+        exports: [typeorm_1.TypeOrmModule],
         controllers: [post_controller_1.PostController],
     })
 ], PostModule);
