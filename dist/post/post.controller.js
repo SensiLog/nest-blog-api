@@ -11,7 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
@@ -21,7 +20,6 @@ const s3_config_1 = require("../config/s3.config");
 const post_entity_1 = require("./post.entity");
 const typeorm_1 = require("typeorm");
 const typeorm_2 = require("@nestjs/typeorm");
-const express_1 = require("express");
 const uuid_1 = require("uuid");
 let PostController = class PostController {
     postRepository;
@@ -42,16 +40,73 @@ let PostController = class PostController {
             imgUrl: uploadResult.Location,
         });
         const savedPost = await this.postRepository.save(post);
+        console.log('Post criado com ID:', savedPost.id);
         return {
             message: 'Post created successfully',
             post: savedPost,
         };
     }
+    async getPostsByPrefix(prefix) {
+        if (!prefix) {
+            throw new common_1.BadRequestException('Prefix is required in the URL');
+        }
+        const posts = await this.postRepository.find({
+            where: { imgUrl: (0, typeorm_1.Like)(`%${prefix}%`) },
+        });
+        if (posts.length === 0) {
+            return {
+                message: 'Nenhum post encontrado.'
+            };
+        }
+        return {
+            message: 'Posts encontrados com sucesso',
+            posts: posts
+        };
+    }
+    async getPostById(id) {
+        const post = await this.postRepository.findOne({
+            where: { id: id },
+        });
+        if (post == null) {
+            return {
+                message: 'Post não encontrado'
+            };
+        }
+        return {
+            message: 'Post encontrado com sucesso',
+            post: post,
+        };
+    }
+    async updatePost(id, updatePostDto) {
+        const post = await this.postRepository.findOne({
+            where: { id: id },
+        });
+        if (post == null) {
+            return {
+                message: 'Post não encontrado'
+            };
+        }
+        await this.postRepository.update(id, updatePostDto);
+        return {
+            message: 'Post atualizado com sucesso'
+        };
+    }
+    async deletePost(id) {
+        const post = await this.postRepository.findOne({
+            where: { id: id },
+        });
+        if (post == null) {
+            return {
+                message: 'Post não encontrado'
+            };
+        }
+        await this.postRepository.delete(id);
+        return {
+            message: 'Post deletado com sucesso'
+        };
+    }
     async uploadToS3(file, prefix) {
         const bucketName = 'blogapi-sensilog';
-        if (!bucketName) {
-            throw new Error('AWS_S3_BUCKET_NAME is not defined in the environment variables');
-        }
         try {
             const params = {
                 Bucket: bucketName,
@@ -74,9 +129,38 @@ __decorate([
     __param(1, (0, common_1.UploadedFile)()),
     __param(2, (0, common_1.Param)('prefix')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [post_createdto_1.CreatePostDto, typeof (_b = typeof express_1.Express !== "undefined" && (_a = express_1.Express.Multer) !== void 0 && _a.File) === "function" ? _b : Object, String]),
+    __metadata("design:paramtypes", [post_createdto_1.CreatePostDto, Object, String]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "createPost", null);
+__decorate([
+    (0, common_1.Get)(':prefix'),
+    __param(0, (0, common_1.Param)('prefix')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "getPostsByPrefix", null);
+__decorate([
+    (0, common_1.Get)('find/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "getPostById", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, post_createdto_1.CreatePostDto]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "updatePost", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "deletePost", null);
 exports.PostController = PostController = __decorate([
     (0, common_1.Controller)('posts'),
     __param(0, (0, typeorm_2.InjectRepository)(post_entity_1.Post)),
