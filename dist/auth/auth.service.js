@@ -32,7 +32,10 @@ let AuthService = class AuthService {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
         const user = this.userRepository.create({ ...createUserDto, password: hashedPassword });
         await this.userRepository.save(user);
-        return { message: 'Usuário registrado com sucesso!' };
+        return {
+            message: 'Usuário registrado com sucesso!',
+            userId: user.id
+        };
     }
     async login(loginUserDto) {
         const { email, password } = loginUserDto;

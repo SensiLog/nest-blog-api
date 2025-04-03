@@ -22,7 +22,10 @@ export class AuthService {
 
         const user = this.userRepository.create({ ...createUserDto, password: hashedPassword });
         await this.userRepository.save(user);
-        return { message: 'Usuário registrado com sucesso!' };
+        return {
+            message: 'Usuário registrado com sucesso!',
+            userId: user.id
+        };
     }
 
     async login(loginUserDto: UserLoginDto): Promise<{ access_token: string }> {
