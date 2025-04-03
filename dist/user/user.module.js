@@ -6,19 +6,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PostModule = void 0;
+exports.UserModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
-const post_controller_1 = require("./post.controller");
-const post_entity_1 = require("./post.entity");
-let PostModule = class PostModule {
+const user_entity_1 = require("./user.entity");
+let UserModule = class UserModule {
 };
-exports.PostModule = PostModule;
-exports.PostModule = PostModule = __decorate([
+exports.UserModule = UserModule;
+exports.UserModule = UserModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([post_entity_1.Post])],
+        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.User])],
         exports: [typeorm_1.TypeOrmModule],
-        controllers: [post_controller_1.PostController],
     })
-], PostModule);
-//# sourceMappingURL=post.module.js.map
+], UserModule);
+//# sourceMappingURL=user.module.js.map

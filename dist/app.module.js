@@ -10,20 +10,50 @@ exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const post_module_1 = require("./post/post.module");
+const user_module_1 = require("./user/user.module");
+const auth_module_1 = require("./auth/auth.module");
+const config_1 = require("@nestjs/config");
+const jwt_1 = require("@nestjs/jwt");
+const post_controller_1 = require("./post/post.controller");
+const auth_controller_1 = require("./auth/auth.controller");
+const auth_service_1 = require("./auth/auth.service");
+const user_entity_1 = require("./user/user.entity");
+const post_entity_1 = require("./post/post.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            typeorm_1.TypeOrmModule.forRoot({
-                type: 'sqlite',
-                database: 'database.sqlite',
-                entities: [__dirname + '/**/*.entity{.ts,.js}'],
-                synchronize: true,
+            config_1.ConfigModule.forRoot({
+                envFilePath: '.env',
+                isGlobal: true,
+            }),
+            typeorm_1.TypeOrmModule.forRootAsync({
+                imports: [config_1.ConfigModule],
+                inject: [],
+                useFactory: async () => ({
+                    type: 'sqlite',
+                    database: 'database.sqlite',
+                    entities: [user_entity_1.User, post_entity_1.Post],
+                    synchronize: false,
+                    autoLoadEntities: true,
+                }),
+            }),
+            jwt_1.JwtModule.registerAsync({
+                imports: [config_1.ConfigModule],
+                inject: [],
+                useFactory: async () => ({
+                    secret: process.env.JWT_SECRET,
+                    signOptions: { expiresIn: process.env.JWT_EXPIRES_IN || '1h' },
+                }),
             }),
             post_module_1.PostModule,
+            user_module_1.UserModule,
+            auth_module_1.AuthModule,
         ],
+        controllers: [post_controller_1.PostController, auth_controller_1.AuthController],
+        providers: [auth_service_1.AuthService],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
