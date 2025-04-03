@@ -14,6 +14,7 @@ const class_validator_1 = require("class-validator");
 class CreatePostDto {
     title;
     content;
+    userId;
 }
 exports.CreatePostDto = CreatePostDto;
 __decorate([
@@ -26,4 +27,9 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreatePostDto.prototype, "content", void 0);
+__decorate([
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsUUID)(),
+    __metadata("design:type", String)
+], CreatePostDto.prototype, "userId", void 0);
 //# sourceMappingURL=post.createdto.js.map

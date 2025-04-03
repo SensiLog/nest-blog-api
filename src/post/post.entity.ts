@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 
-@Entity()
+@Entity('posts')
 export class Post {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -12,11 +12,14 @@ export class Post {
   @Column()
   content: string;
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }) // <--- CORRIGIDO
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   date: Date;
 
   @Column()
   imgUrl: string;
+
+  @Column()
+  userId: string;
 
   @ManyToOne(() => User, user => user.posts, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })

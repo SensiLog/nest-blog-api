@@ -5,5 +5,6 @@ export declare class Post {
     content: string;
     date: Date;
     imgUrl: string;
+    userId: string;
     user: User;
 }

@@ -38,32 +38,32 @@ export class CreateUserTable1743700269056 implements MigrationInterface {
             true, // Indica se a tabela deve ser criada se não existir
         );
 
-        // Adicionar a coluna 'userId' na tabela 'post'
+        // Adicionar a coluna 'userId' na tabela 'posts' <------------------ ALTERAÇÃO AQUI
         await queryRunner.addColumn(
-            'post',
+            'posts', // <--------------------------------------------------- ALTERAÇÃO AQUI
             new TableColumn({
                 name: 'userId',
                 type: 'uuid',
-                isNullable: true, // Permite que posts existentes não tenham um usuário inicialmente (você pode alterar isso se necessário)
+                isNullable: true,
             }),
         );
 
-        // Criar a chave estrangeira na tabela 'post' referenciando a tabela 'user'
+        // Criar a chave estrangeira na tabela 'posts' referenciando a tabela 'user' <--- ALTERAÇÃO AQUI
         await queryRunner.createForeignKey(
-            'post',
+            'posts', // <--------------------------------------------------- ALTERAÇÃO AQUI
             new TableForeignKey({
                 columnNames: ['userId'],
                 referencedColumnNames: ['id'],
                 referencedTableName: 'user',
-                onDelete: 'CASCADE', // Define o comportamento em caso de exclusão do usuário (você pode usar 'SET NULL' ou 'RESTRICT' dependendo da sua lógica)
+                onDelete: 'CASCADE',
             }),
         );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
         // Reverter as alterações (ordem inversa da criação)
-        await queryRunner.dropForeignKey('post', 'FK_post_user'); // O nome da FK pode variar dependendo do seu banco
-        await queryRunner.dropColumn('post', 'userId');
+        await queryRunner.dropForeignKey('posts', 'FK_post_user'); // <------- ALTERAÇÃO AQUI
+        await queryRunner.dropColumn('posts', 'userId'); // <------------------ ALTERAÇÃO AQUI
         await queryRunner.dropTable('user');
     }
 

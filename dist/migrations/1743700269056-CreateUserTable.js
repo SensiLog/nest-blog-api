@@ -34,12 +34,12 @@ class CreateUserTable1743700269056 {
                 },
             ],
         }), true);
-        await queryRunner.addColumn('post', new typeorm_1.TableColumn({
+        await queryRunner.addColumn('posts', new typeorm_1.TableColumn({
             name: 'userId',
             type: 'uuid',
             isNullable: true,
         }));
-        await queryRunner.createForeignKey('post', new typeorm_1.TableForeignKey({
+        await queryRunner.createForeignKey('posts', new typeorm_1.TableForeignKey({
             columnNames: ['userId'],
             referencedColumnNames: ['id'],
             referencedTableName: 'user',
@@ -47,8 +47,8 @@ class CreateUserTable1743700269056 {
         }));
     }
     async down(queryRunner) {
-        await queryRunner.dropForeignKey('post', 'FK_post_user');
-        await queryRunner.dropColumn('post', 'userId');
+        await queryRunner.dropForeignKey('posts', 'FK_post_user');
+        await queryRunner.dropColumn('posts', 'userId');
         await queryRunner.dropTable('user');
     }
 }
