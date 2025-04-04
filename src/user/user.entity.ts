@@ -13,7 +13,7 @@ export class User {
     @Column()
     email: string;
     
-    @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     date: Date;
     
     @Column()

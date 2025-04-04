@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePostDto } from './post.createdto';
@@ -18,6 +19,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Express } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { Pagination } from 'nestjs-typeorm-paginate';
 
 @Controller('posts')
 export class PostController {
@@ -76,6 +78,26 @@ export class PostController {
           posts: posts,
       };
   }
+
+  @Get('find/:userId')
+  async getPostsPagination(
+    @Param('userId') userId: string,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 30,
+  ) {
+    const posts = await this.postRepository.findAndCount({
+        where: {
+            userId: userId,
+        },
+        take: limit,
+        skip: (page - 1) * limit});
+    return {
+        posts: posts
+    }
+  }
+
+
+
 
   @Get('find/:id')
   async getPostById(@Param('id') id: string) {

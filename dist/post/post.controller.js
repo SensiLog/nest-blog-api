@@ -64,6 +64,18 @@ let PostController = class PostController {
             posts: posts,
         };
     }
+    async getPostsPagination(userId, page = 1, limit = 30) {
+        const posts = await this.postRepository.findAndCount({
+            where: {
+                userId: userId,
+            },
+            take: limit,
+            skip: (page - 1) * limit
+        });
+        return {
+            posts: posts
+        };
+    }
     async getPostById(id) {
         const post = await this.postRepository.findOne({
             where: { id: id },
@@ -139,6 +151,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PostController.prototype, "getPostsByUser", null);
+__decorate([
+    (0, common_1.Get)('find/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, Number]),
+    __metadata("design:returntype", Promise)
+], PostController.prototype, "getPostsPagination", null);
 __decorate([
     (0, common_1.Get)('find/:id'),
     __param(0, (0, common_1.Param)('id')),

@@ -5,7 +5,7 @@ export const AppDataSource = new DataSource({
   database: 'blog_api',
   port: 5432,
   username: 'postgres',
-  password: 'root',
+  password: 'postgres',
   host: 'localhost',
   entities: ['./dist/src/**/*.entity.js'],
   migrations: ['./dist/migrations/*.js'],

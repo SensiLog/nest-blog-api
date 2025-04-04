@@ -15,6 +15,9 @@ export declare class PostController {
         message: string;
         posts: PostEntity[];
     }>;
+    getPostsPagination(userId: string, page?: number, limit?: number): Promise<{
+        posts: [PostEntity[], number];
+    }>;
     getPostById(id: string): Promise<{
         message: string;
         post?: undefined;

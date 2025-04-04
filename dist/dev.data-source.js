@@ -7,10 +7,10 @@ exports.AppDataSource = new typeorm_1.DataSource({
     database: 'blog_api',
     port: 5432,
     username: 'postgres',
-    password: 'root',
+    password: 'postgres',
     host: 'localhost',
     entities: ['./dist/src/**/*.entity.js'],
     migrations: ['./dist/migrations/*.js'],
     synchronize: false,
 });
-//# sourceMappingURL=data-source.js.map
+//# sourceMappingURL=dev.data-source.js.map

@@ -5,10 +5,10 @@ class CreateTablePost1743689649603 {
     async up(queryRunner) {
         queryRunner.query(`
             CREATE TABLE IF NOT EXISTS posts (
-            id UUID PRIMARY KEY,
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             title VARCHAR(255) NOT NULL,
             content TEXT NOT NULL,
-            date DATETIME DEFAULT CURRENT_TIMESTAMP,
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             imgUrl VARCHAR(255) NOT NULL
             );
             `);

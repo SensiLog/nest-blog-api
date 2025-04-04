@@ -13,7 +13,7 @@ export class CreateUserTable1743700269056 implements MigrationInterface {
                         type: 'uuid',
                         isPrimary: true,
                         generationStrategy: 'uuid',
-                        default: 'uuid_generate_v4()',
+                        default: 'gen_random_uuid()',
                     },
                     {
                         name: 'name',
