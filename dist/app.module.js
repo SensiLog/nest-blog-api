@@ -19,6 +19,8 @@ const auth_controller_1 = require("./auth/auth.controller");
 const auth_service_1 = require("./auth/auth.service");
 const user_entity_1 = require("./user/user.entity");
 const post_entity_1 = require("./post/post.entity");
+const lei_module_1 = require("./lei/lei.module");
+const lei_controller_1 = require("./lei/lei.controller");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -58,8 +60,9 @@ exports.AppModule = AppModule = __decorate([
             post_module_1.PostModule,
             user_module_1.UserModule,
             auth_module_1.AuthModule,
+            lei_module_1.LeiModule
         ],
-        controllers: [post_controller_1.PostController, auth_controller_1.AuthController],
+        controllers: [post_controller_1.PostController, auth_controller_1.AuthController, lei_controller_1.LeiController],
         providers: [auth_service_1.AuthService],
     })
 ], AppModule);

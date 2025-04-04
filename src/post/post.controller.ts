@@ -31,7 +31,7 @@ export class PostController {
   @Post()
   @UseInterceptors(FileInterceptor('image'))
   async createPost(
-      @Body() createPostDto: CreatePostDto, // Agora esperamos userId no DTO
+      @Body() createPostDto: CreatePostDto,
       @UploadedFile() file: Express.Multer.File,
   ) {
       if (!file) {

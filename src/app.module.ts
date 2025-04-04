@@ -10,6 +10,8 @@ import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
 import { User } from './user/user.entity';
 import { Post } from './post/post.entity';
+import { LeiModule } from './lei/lei.module';
+import { LeiController } from './lei/lei.controller';
 
 @Module({
   imports: [
@@ -46,8 +48,9 @@ import { Post } from './post/post.entity';
     PostModule,
     UserModule,
     AuthModule,
+    LeiModule
   ],
-  controllers: [PostController, AuthController],
+  controllers: [PostController, AuthController, LeiController],
   providers: [AuthService],
 })
 export class AppModule {}
