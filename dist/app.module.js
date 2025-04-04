@@ -39,6 +39,9 @@ exports.AppModule = AppModule = __decorate([
                     username: 'blog_api_iudh_user',
                     password: 'vOV3fXbuAHC0CHpUMNVg6dH9klvZVuqL',
                     database: 'blog_api_iudh',
+                    ssl: {
+                        rejectUnauthorized: false,
+                    },
                     entities: [user_entity_1.User, post_entity_1.Post],
                     synchronize: false,
                     autoLoadEntities: true,

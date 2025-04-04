@@ -27,6 +27,9 @@ import { Post } from './post/post.entity';
         username: 'blog_api_iudh_user',
         password: 'vOV3fXbuAHC0CHpUMNVg6dH9klvZVuqL',
         database: 'blog_api_iudh',
+        ssl: {
+          rejectUnauthorized: false,
+        },
         entities: [User, Post],
         synchronize: false,
         autoLoadEntities: true,
