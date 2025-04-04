@@ -17,7 +17,6 @@ exports.LeiModule = LeiModule;
 exports.LeiModule = LeiModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([lei_entity_1.Lei])],
-        exports: [typeorm_1.TypeOrmModule],
         controllers: [lei_controller_1.LeiController],
     })
 ], LeiModule);
