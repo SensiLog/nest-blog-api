@@ -1,10 +1,14 @@
 import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { Lei } from "./lei.entity";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Controller('leis')
 export class LeiController {
-    constructor(private readonly leiRepository: Repository<Lei>) {}
+    constructor(
+        @InjectRepository(Lei)
+        private readonly leiRepository: Repository<Lei>,
+    ) {}
 
     @Post()
     async create(@Body() leiData: Lei) {

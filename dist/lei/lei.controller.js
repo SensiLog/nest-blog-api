@@ -16,6 +16,7 @@ exports.LeiController = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const lei_entity_1 = require("./lei.entity");
+const typeorm_2 = require("@nestjs/typeorm");
 let LeiController = class LeiController {
     leiRepository;
     constructor(leiRepository) {
@@ -116,6 +117,7 @@ __decorate([
 ], LeiController.prototype, "remove", null);
 exports.LeiController = LeiController = __decorate([
     (0, common_1.Controller)('leis'),
+    __param(0, (0, typeorm_2.InjectRepository)(lei_entity_1.Lei)),
     __metadata("design:paramtypes", [typeorm_1.Repository])
 ], LeiController);
 //# sourceMappingURL=lei.controller.js.map
