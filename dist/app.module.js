@@ -21,6 +21,7 @@ const user_entity_1 = require("./user/user.entity");
 const post_entity_1 = require("./post/post.entity");
 const lei_module_1 = require("./lei/lei.module");
 const lei_controller_1 = require("./lei/lei.controller");
+const lei_entity_1 = require("./lei/lei.entity");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -44,7 +45,7 @@ exports.AppModule = AppModule = __decorate([
                     ssl: {
                         rejectUnauthorized: false,
                     },
-                    entities: [user_entity_1.User, post_entity_1.Post],
+                    entities: [user_entity_1.User, post_entity_1.Post, lei_entity_1.Lei],
                     synchronize: false,
                     autoLoadEntities: true,
                 }),

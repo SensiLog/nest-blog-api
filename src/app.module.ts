@@ -12,6 +12,7 @@ import { User } from './user/user.entity';
 import { Post } from './post/post.entity';
 import { LeiModule } from './lei/lei.module';
 import { LeiController } from './lei/lei.controller';
+import { Lei } from './lei/lei.entity';
 
 @Module({
   imports: [
@@ -32,7 +33,7 @@ import { LeiController } from './lei/lei.controller';
         ssl: {
           rejectUnauthorized: false,
         },
-        entities: [User, Post],
+        entities: [User, Post, Lei],
         synchronize: false,
         autoLoadEntities: true,
       }),
