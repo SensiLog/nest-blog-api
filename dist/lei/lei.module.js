@@ -18,6 +18,7 @@ exports.LeiModule = LeiModule = __decorate([
     (0, common_1.Module)({
         imports: [typeorm_1.TypeOrmModule.forFeature([lei_entity_1.Lei])],
         controllers: [lei_controller_1.LeiController],
+        exports: [typeorm_1.TypeOrmModule]
     })
 ], LeiModule);
 //# sourceMappingURL=lei.module.js.map

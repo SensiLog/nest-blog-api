@@ -6,5 +6,6 @@ import { LeiController } from './lei.controller';
 @Module({
     imports: [TypeOrmModule.forFeature([Lei])],
     controllers: [LeiController],
+    exports: [TypeOrmModule]
 })
 export class LeiModule {}
