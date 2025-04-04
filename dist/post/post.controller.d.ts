@@ -8,13 +8,6 @@ export declare class PostController {
         message: string;
         post: PostEntity;
     }>;
-    getPostsByUser(userId: string): Promise<{
-        message: string;
-        posts?: undefined;
-    } | {
-        message: string;
-        posts: PostEntity[];
-    }>;
     getPostsPagination(userId: string, page?: number, limit?: number): Promise<{
         posts: [PostEntity[], number];
     }>;

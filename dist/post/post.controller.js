@@ -47,23 +47,6 @@ let PostController = class PostController {
             post: savedPost,
         };
     }
-    async getPostsByUser(userId) {
-        if (!userId) {
-            throw new common_1.BadRequestException('User ID is required in the URL');
-        }
-        const posts = await this.postRepository.find({
-            where: { userId: userId },
-        });
-        if (posts.length === 0) {
-            return {
-                message: 'Nenhum post encontrado para este usuário.',
-            };
-        }
-        return {
-            message: 'Posts encontrados com sucesso',
-            posts: posts,
-        };
-    }
     async getPostsPagination(userId, page = 1, limit = 30) {
         const posts = await this.postRepository.findAndCount({
             where: {
@@ -146,13 +129,6 @@ __decorate([
 ], PostController.prototype, "createPost", null);
 __decorate([
     (0, common_1.Get)('user/:userId'),
-    __param(0, (0, common_1.Param)('userId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], PostController.prototype, "getPostsByUser", null);
-__decorate([
-    (0, common_1.Get)('find/:userId'),
     __param(0, (0, common_1.Param)('userId')),
     __param(1, (0, common_1.Query)('page')),
     __param(2, (0, common_1.Query)('limit')),

@@ -57,29 +57,7 @@ export class PostController {
       };
   }
 
-  @Get('user/:userId') // Nova rota para buscar posts por userId
-  async getPostsByUser(@Param('userId') userId: string) {
-      if (!userId) {
-          throw new BadRequestException('User ID is required in the URL');
-      }
-
-      const posts = await this.postRepository.find({
-          where: { userId: userId },
-      });
-
-      if (posts.length === 0) {
-          return {
-              message: 'Nenhum post encontrado para este usuário.',
-          };
-      }
-
-      return {
-          message: 'Posts encontrados com sucesso',
-          posts: posts,
-      };
-  }
-
-  @Get('find/:userId')
+  @Get('user/:userId')
   async getPostsPagination(
     @Param('userId') userId: string,
     @Query('page') page: number = 1,
