@@ -9,7 +9,11 @@ export declare class PostController {
         post: PostEntity;
     }>;
     getPostsPagination(userId: string, page?: number, limit?: number): Promise<{
-        posts: [PostEntity[], number];
+        posts: PostEntity[];
+        totalCount: number;
+        currentPage: number;
+        pageSize: number;
+        totalPages: number;
     }>;
     getPostById(id: string): Promise<{
         message: string;

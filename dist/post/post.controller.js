@@ -48,15 +48,19 @@ let PostController = class PostController {
         };
     }
     async getPostsPagination(userId, page = 1, limit = 30) {
-        const posts = await this.postRepository.findAndCount({
+        const [posts, totalCount] = await this.postRepository.findAndCount({
             where: {
                 userId: userId,
             },
             take: limit,
-            skip: (page - 1) * limit
+            skip: (page - 1) * limit,
         });
         return {
-            posts: posts
+            posts: posts,
+            totalCount: totalCount,
+            currentPage: page,
+            pageSize: limit,
+            totalPages: Math.ceil(totalCount / limit),
         };
     }
     async getPostById(id) {

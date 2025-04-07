@@ -63,15 +63,20 @@ export class PostController {
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 30,
   ) {
-    const posts = await this.postRepository.findAndCount({
-        where: {
-            userId: userId,
-        },
-        take: limit,
-        skip: (page - 1) * limit});
+    const [posts, totalCount] = await this.postRepository.findAndCount({
+      where: {
+        userId: userId,
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+    });
     return {
-        posts: posts
-    }
+      posts: posts,
+      totalCount: totalCount,
+      currentPage: page,
+      pageSize: limit,
+      totalPages: Math.ceil(totalCount / limit),
+    };
   }
 
 
