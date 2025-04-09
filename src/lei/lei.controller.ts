@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { Lei } from "./lei.entity";
 import { InjectRepository } from "@nestjs/typeorm";
+import { StatusLei } from "./enum/enum.status-lei";
 
 @Controller('leis')
 export class LeiController {
@@ -41,6 +42,60 @@ export class LeiController {
             return lei;
         } catch (error) {
             throw new NotFoundException(`Erro ao buscar `);
+        }
+    }
+
+    @Get(':userId/sancionadas')
+    async getLeisSancionadas(@Param('userId') userId: string,
+                            @Query('page') page: number = 1,
+                            @Query('limit') limit: number = 10,) {
+        try {
+            const [leis, totalCount] = await this.leiRepository.findAndCount({
+                where: { userId: userId,
+                         statusLei : StatusLei.SANCIONADA 
+                        },
+                        take: limit,
+                        skip: (page - 1) * limit,
+            });
+            if (!leis) {
+                throw new NotFoundException(`Leis do user de ID ${userId} nao encontradas`);
+            }
+            return {
+                leis: leis,
+                totalCount: totalCount,
+                currentPage: page,
+                pageSize: limit,
+                totalPages: Math.ceil(totalCount / limit),
+              };
+        } catch (error) {
+            throw new NotFoundException(`Erro ao buscar`);
+        }
+    }
+
+    @Get(':userId/sancionadas')
+    async getLeisProjetos(@Param('userId') userId: string,
+                            @Query('page') page: number = 1,
+                            @Query('limit') limit: number = 10,) {
+        try {
+            const [leis, totalCount] = await this.leiRepository.findAndCount({
+                where: { userId: userId,
+                         statusLei : StatusLei.PROJETO 
+                        },
+                        take: limit,
+                        skip: (page - 1) * limit,
+            });
+            if (!leis) {
+                throw new NotFoundException(`Leis do user de ID ${userId} nao encontradas`);
+            }
+            return {
+                leis: leis,
+                totalCount: totalCount,
+                currentPage: page,
+                pageSize: limit,
+                totalPages: Math.ceil(totalCount / limit),
+              };
+        } catch (error) {
+            throw new NotFoundException(`Erro ao buscar`);
         }
     }
 

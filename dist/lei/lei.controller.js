@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const lei_entity_1 = require("./lei.entity");
 const typeorm_2 = require("@nestjs/typeorm");
+const enum_status_lei_1 = require("./enum/enum.status-lei");
 let LeiController = class LeiController {
     leiRepository;
     constructor(leiRepository) {
@@ -50,6 +51,54 @@ let LeiController = class LeiController {
         }
         catch (error) {
             throw new common_1.NotFoundException(`Erro ao buscar `);
+        }
+    }
+    async getLeisSancionadas(userId, page = 1, limit = 10) {
+        try {
+            const [leis, totalCount] = await this.leiRepository.findAndCount({
+                where: { userId: userId,
+                    statusLei: enum_status_lei_1.StatusLei.SANCIONADA
+                },
+                take: limit,
+                skip: (page - 1) * limit,
+            });
+            if (!leis) {
+                throw new common_1.NotFoundException(`Leis do user de ID ${userId} nao encontradas`);
+            }
+            return {
+                leis: leis,
+                totalCount: totalCount,
+                currentPage: page,
+                pageSize: limit,
+                totalPages: Math.ceil(totalCount / limit),
+            };
+        }
+        catch (error) {
+            throw new common_1.NotFoundException(`Erro ao buscar`);
+        }
+    }
+    async getLeisProjetos(userId, page = 1, limit = 10) {
+        try {
+            const [leis, totalCount] = await this.leiRepository.findAndCount({
+                where: { userId: userId,
+                    statusLei: enum_status_lei_1.StatusLei.PROJETO
+                },
+                take: limit,
+                skip: (page - 1) * limit,
+            });
+            if (!leis) {
+                throw new common_1.NotFoundException(`Leis do user de ID ${userId} nao encontradas`);
+            }
+            return {
+                leis: leis,
+                totalCount: totalCount,
+                currentPage: page,
+                pageSize: limit,
+                totalPages: Math.ceil(totalCount / limit),
+            };
+        }
+        catch (error) {
+            throw new common_1.NotFoundException(`Erro ao buscar`);
         }
     }
     async update(id, leiData) {
@@ -100,6 +149,24 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], LeiController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)(':userId/sancionadas'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, Number]),
+    __metadata("design:returntype", Promise)
+], LeiController.prototype, "getLeisSancionadas", null);
+__decorate([
+    (0, common_1.Get)(':userId/sancionadas'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Query)('page')),
+    __param(2, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Number, Number]),
+    __metadata("design:returntype", Promise)
+], LeiController.prototype, "getLeisProjetos", null);
 __decorate([
     (0, common_1.Patch)(':id'),
     __param(0, (0, common_1.Param)('id')),
