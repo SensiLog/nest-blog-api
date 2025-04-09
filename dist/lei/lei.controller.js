@@ -159,7 +159,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LeiController.prototype, "getLeisSancionadas", null);
 __decorate([
-    (0, common_1.Get)(':userId/sancionadas'),
+    (0, common_1.Get)(':userId/projeto'),
     __param(0, (0, common_1.Param)('userId')),
     __param(1, (0, common_1.Query)('page')),
     __param(2, (0, common_1.Query)('limit')),
