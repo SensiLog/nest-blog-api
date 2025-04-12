@@ -27,17 +27,18 @@ let PostController = class PostController {
         this.postRepository = postRepository;
     }
     async createPost(createPostDto, file) {
-        if (!file) {
-            throw new common_1.BadRequestException('Image file is required');
-        }
         if (!createPostDto.userId) {
             throw new common_1.BadRequestException('User ID is required');
         }
-        const uploadResult = await this.uploadToS3(file, createPostDto.userId);
+        let imgUrl = 'https://thumbs.dreamstime.com/b/homem-s%C3%A9rio-novo-103797384.jpg';
+        if (file) {
+            const uploadResult = await this.uploadToS3(file, createPostDto.userId);
+            imgUrl = uploadResult.Location;
+        }
         const post = this.postRepository.create({
             title: createPostDto.title,
             content: createPostDto.content,
-            imgUrl: uploadResult.Location,
+            imgUrl: imgUrl,
             userId: createPostDto.userId,
         });
         const savedPost = await this.postRepository.save(post);
@@ -51,6 +52,9 @@ let PostController = class PostController {
         const [posts, totalCount] = await this.postRepository.findAndCount({
             where: {
                 userId: userId,
+            },
+            order: {
+                date: 'DESC'
             },
             take: limit,
             skip: (page - 1) * limit,
